@@ -1,36 +1,46 @@
-#include <iostream>
-#include <vector>
-#include <algorithm>
-#include <utility>
+#include <bits/stdc++.h>
 using namespace std;
 
-#define all(x) x.begin(), x.end()
-//arr[4] = 2 5 3 4
-int main(){
-  long long n, x, index;
-  vector<long long> lis (1);
+#define all(x) x.begin(),x.end()
+#define readv(x) for (auto &v: x) cin >> v;
+#define printv(x) for (auto &v: x) cout << v << " ";
 
-  cin >> n >> lis[0];
+using ll = long long int;
+using ull = unsigned long long int;
+using vll = vector<ll>;
+using pll = pair<ll, ll>;
+using vpll = vector<pll>;
+using vc = vector<char>;
 
+void solve () {
+  ll n;
+  vll arr;
 
-  for (long long i = 1; i < n; i++) {
-    cin >> x;
+  cin >> n;
+  arr.resize(n);
+  readv(arr);
 
-    index = lower_bound(all(lis), x) - lis.begin();
+  vll lis;
 
-    if (index == 0) {
-      lis[0] = x;
-    }
-    else if (index == lis.size()){
-      lis.push_back(x);
-    }
-    else{
-      lis[index] = x;
-    }
+  for (const ll &x: arr) {
+    vll::iterator it = lower_bound(all(lis), x);
+
+    if (it == lis.end()) lis.push_back(x);
+    else *it = x;
   }
 
-  //for (int i = 0; i < lis.size(); i++)
-    //cout << lis[i] << '\n';
+  cout << lis.size() << '\n';
+}
 
-  cout << lis.size();
+int main () {
+  //cin.tie(0) -> ios_base::sync_with_stdio(0);
+
+  int t = 1;
+
+  //cin >> t;
+
+  for (int i = 1; i <= t; i++) {
+    //cout << "Test #" << i << ":\n";
+    solve();
+  }
 }

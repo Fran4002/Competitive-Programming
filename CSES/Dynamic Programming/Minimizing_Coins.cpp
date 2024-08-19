@@ -1,41 +1,45 @@
-#include <iostream>
-#include <vector>
-#include <algorithm>
+#include <bits/stdc++.h>
 using namespace std;
 
-//const int small_dice[6] = {1, 1, 4, }
-vector<long long> steps(1000000,0);
+#define all(x) x.begin(),x.end()
+#define readv(x) for (auto &v: x) cin >> v;
+#define printv(x) for (auto &v: x) cout << v << " ";
 
-int main(){
-  long long n, x;
+using ll = long long int;
+using ull = unsigned long long int;
+using vll = vector<ll>;
+using pll = pair<ll, ll>;
+using vpll = vector<pll>;
+using vc = vector<char>;
+
+void solve () {
+  ll n, x;
+  vll dp, coins;
 
   cin >> n >> x;
+  coins.resize(n);
+  dp.resize(x + 1, 1e9);
+  readv(coins);
 
-  std::vector<long long> v(n);
-  for (long long i = 0; i < n; i++) {
-    cin >> v[i];
-    steps[v[i]] = 1;
-  }
-
-  sort(v.begin(), v.end());
-
-  for (long long i = v[0]; i <= x; i++) {
-    if (steps[i]){
-      for (long long j = 0; j < n; j++) {
-          if (i + v[j] > x){
-            break;
-          }
-          else if (steps[i + v[j]] == 0)
-            steps[i + v[j]] = steps[i] + 1;
-          else
-            steps[i + v[j]] = min(steps[i] + 1, steps[i + v[j]]);
-      }
+  dp[0] = 0;
+  for (ll c: coins) {
+    for (ll i = c; i <= x; i++) {
+      dp[i] = min(dp[i], dp[i - c] + 1);
     }
   }
-  if (steps[x])
-    cout << steps[x];
-  else
-   cout << -1;
+
+  cout << (dp[x] == 1e9? -1: dp[x]) << '\n';
 }
 
-//+52 1 444 867 0528
+int main () {
+  //cin.tie(0) -> ios_base::sync_with_stdio(0);
+
+  int t = 1;
+
+  //cin >> t;
+
+  for (int i = 1; i <= t; i++) {
+    //cout << "Test #" << i << ":\n";
+    solve();
+  }
+}

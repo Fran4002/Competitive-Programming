@@ -1,29 +1,48 @@
-#include <iostream>
-#include <vector>
-#include <algorithm>
+#include <bits/stdc++.h>
 using namespace std;
 
-//const int small_dice[6] = {1, 1, 4, }
-long long GreaterDigit(long long n){
-  long long d = 0;
-  while (n){
-    if(n % 10 > d) d = n % 10;
-    n /= 10;
-  }
-  return d;
-}
+#define all(x) x.begin(),x.end()
+#define readv(x) for (auto &v: x) cin >> v;
+#define printv(x) for (auto &v: x) cout << v << " ";
 
-int main(){
-  long long n, steps = 0;
+using ll = long long int;
+using ull = unsigned long long int;
+using vll = vector<ll>;
+using pll = pair<ll, ll>;
+using vpll = vector<pll>;
+using vc = vector<char>;
+
+void solve () {
+  ll n;
 
   cin >> n;
 
-  //std::vector<long long> digits = QoD(n);
+  ll steps = 0;
 
-  while (n){
-    n -= GreaterDigit(n);
+  while (n) {
+    ll x = n, digit = 0;
     steps++;
-  }
 
-  cout << steps;
+    while (x) {
+      digit = max(digit, x % 10);
+      x /= 10;
+    }
+
+    n -= digit;
+  }
+  
+  cout << steps << '\n';
+}
+
+int main () {
+  //cin.tie(0) -> ios_base::sync_with_stdio(0);
+
+  int t = 1;
+
+  //cin >> t;
+
+  for (int i = 1; i <= t; i++) {
+    //cout << "Test #" << i << ":\n";
+    solve();
+  }
 }

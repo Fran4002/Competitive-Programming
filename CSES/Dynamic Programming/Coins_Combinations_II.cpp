@@ -1,46 +1,49 @@
-#include <algorithm>
-#include <iostream>
-#include <vector>
+#include <bits/stdc++.h>
 using namespace std;
 
-typedef signed long long int ll;
-typedef vector<signed long long int> vi;
+#define all(x) x.begin(),x.end()
+#define readv(x) for (auto &v: x) cin >> v;
+#define printv(x) for (auto &v: x) cout << v << " ";
 
-int main() {
-  ll n, x, total = 0;
+using ll = long long int;
+using ull = unsigned long long int;
+using vll = vector<ll>;
+using pll = pair<ll, ll>;
+using vpll = vector<pll>;
+using vc = vector<char>;
+
+const ll MOD = 1e9 + 7;
+
+void solve () {
+  ll n, x;
+  vll dp, coins;
 
   cin >> n >> x;
+  coins.resize(n);
+  dp.resize(x + 1, 0);
+  readv(coins);
 
-  vi coins(n);
-  vector<vector<ll>> steps(100000005, vi(n, 0));
-
-  for (ll i = 0; i < n; i++) {
-    cin >> coins[i];
-  }
-
-  sort(coins.begin(), coins.end());
-
-  for (ll i = 0; i < n; i++) {
-    steps[coins[i]][i] = 1;
-  }
-
-  for (ll i = coins[0]; i < x; i++) {
-    for (ll j = 0; j < n; j++) {
-      if (steps[i][j]) {
-        for (ll g = j; g < n; g++) {
-          if (i + coins[g] > x)
-            break;
-          else
-            steps[i + coins[g]][g] = (steps[i + coins[g]][g] + 1) % 1000000007;
-        }
-      }
+  for (ll c: coins) {
+    if (c > x) continue;
+    dp[c] += 1;
+    for (ll i = c; i <= x; i++) {
+      dp[i] += dp[i - c];
+      dp[i] %= MOD;
     }
   }
 
-  for (ll i = 0; i < n; i++) {
-    total += steps[x][i];
-    total %= 1000000007;
-  }
+  cout << dp[x] << '\n';
+}
 
-  cout << total;
+int main () {
+  //cin.tie(0) -> ios_base::sync_with_stdio(0);
+
+  int t = 1;
+
+  //cin >> t;
+
+  for (int i = 1; i <= t; i++) {
+    //cout << "Test #" << i << ":\n";
+    solve();
+  }
 }

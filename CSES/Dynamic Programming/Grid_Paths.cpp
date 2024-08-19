@@ -1,56 +1,73 @@
-#include <iostream>
-#include <vector>
-#include <algorithm>
+#include <bits/stdc++.h>
 using namespace std;
 
-long long n;
-vector<vector<long long>> paths;
-vector<vector<bool>> visted;
-vector<vector<char>> grid;
+#define all(x) x.begin(),x.end()
+#define readv(x) for (auto &v: x) cin >> v;
+#define printv(x) for (auto &v: x) cout << v << " ";
 
-long long func(int x, int y){
-  if (x >= n || y >= n)
-    return 0;
-  if (grid[x][y] == '*')
-    return 0;
-  else if (visted[x][y])
-    return paths[x][y];
-  else if (x == n - 1 && y == n - 1)
-    return 1;
-  else{
-    visted[x][y] = true;
-    paths[x][y] = (func(x + 1, y) + func(x, y + 1)) % 1000000007;
-    return paths[x][y];
-  }
-}
+using ll = long long int;
+using ull = unsigned long long int;
+using vll = vector<ll>;
+using pll = pair<ll, ll>;
+using vpll = vector<pll>;
+using vc = vector<char>;
 
-int main(){
+const ll MOD = 1e9 + 7;
+
+void solve () {
+  ll n;
+  vector<vc> board;
+  vector<vll> mat;
 
   cin >> n;
+  board.resize(n, vc(n)); 
+  mat.resize(n, vll(n, 0));
 
-  std::vector<long long> aui(n, 0);
-  std::vector<char> auc(n,'.');
-  std::vector<bool> aub(n, 0);
+  for (vc &row: board) {
+    for (char &c: row) cin >> c;
+  }
 
-  for (long long i = 0; i < n; i++) {
-    /* code */
-    paths.push_back(aui);
-    grid.push_back(auc);
-    visted.push_back(aub);
+  mat[0][0] = 1;
 
-    for (long long j = 0; j < n; j++) {
-      /* code */
-      cin >> grid.back()[j];
+  if (board.back().back() == '*') {
+    cout << 0 << '\n';
+    return;
+  }
+
+  queue<pll> q;
+  q.push({0, 0});
+
+  while (!q.empty()) {
+    const pll p = q.front(); q.pop();
+
+    if (board[p.first][p.second] == '*') continue;
+    board[p.first][p.second] = '*';
+
+    if (p.first + 1 < n) {
+      q.push({p.first + 1, p.second});
+      mat[p.first + 1][p.second] += mat[p.first][p.second];
+      mat[p.first + 1][p.second] %= MOD;
+    }
+
+    if (p.second + 1 < n) {
+      q.push({p.first, p.second + 1});
+      mat[p.first][p.second + 1] += mat[p.first][p.second];
+      mat[p.first][p.second + 1] %= MOD;
     }
   }
-  /*
-  for (long long i = 0; i < n; i++) {
-    for (long long j = 0; j < n; j++) {
-      cout << grid[i][j];
-    }
+
+  cout << mat[n - 1][n - 1] << '\n';
+}
+
+int main () {
+  //cin.tie(0) -> ios_base::sync_with_stdio(0);
+
+  int t = 1;
+
+  //cin >> t;
+
+  for (int i = 1; i <= t; i++) {
+    //cout << "Test #" << i << ":\n";
+    solve();
   }
-  */
-
-  cout << func(0, 0);
-
 }

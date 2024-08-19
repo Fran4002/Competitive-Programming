@@ -1,40 +1,50 @@
-#include <iostream>
-#include <vector>
-#include <algorithm>
-#include <utility>
+#include <bits/stdc++.h>
 using namespace std;
 
 #define all(x) x.begin(),x.end()
+#define readv(x) for (auto &v: x) cin >> v;
+#define printv(x) for (auto &v: x) cout << v << " ";
 
-long long n, x;
-vector <pair<long long, long long>> books;
+using ll = long long int;
+using ull = unsigned long long int;
+using vll = vector<ll>;
+using pll = pair<ll, ll>;
+using vpll = vector<pll>;
+using vc = vector<char>;
 
-long long dp(long long cash, long long book, long long pages){
-  if (book >= n)
-    return pages;
-  else if (cash >= books[book].first)
-    return max(dp(cash - books[book].first, book + 1, pages + books[book].second), dp(cash, book + 1, pages));
-  else
-    return pages;
-}
-
-
-int main(){
-  long long aux;
+void solve () {
+  ll n, x;
+  vll h, s, dp;
 
   cin >> n >> x;
+  h.resize(n);
+  s.resize(n);
+  readv(h);
+  readv(s);
 
-  for (long long i = 0; i < n; i++){
-    cin >> aux;
-    books.push_back(make_pair(aux, 0));
+  dp.resize(x + 1, 0);
+
+  ll ans = 0;
+
+  for (ll i = 0; i < n; i++) {
+    for (ll j = x; j >= h[i]; j--) {
+      dp[j] = max(dp[j], dp[j - h[i]] + s[i]);
+      ans = max(dp[j], ans);
+    }
   }
 
-  for (long long i = 0; i < n; i++){
-    cin >> books[i].second;
-    //books.push_back(make_pair(aux, 0));
+  cout << ans << '\n';
+}
+
+int main () {
+  //cin.tie(0) -> ios_base::sync_with_stdio(0);
+
+  int t = 1;
+
+  //cin >> t;
+
+  for (int i = 1; i <= t; i++) {
+    //cout << "Test #" << i << ":\n";
+    solve();
   }
-
-  sort(all(books));
-
-  cout << dp(x, 0, 0);
 }
