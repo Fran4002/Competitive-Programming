@@ -2,8 +2,8 @@
 using namespace std;
 
 #define all(x) x.begin(),x.end()
-#define readv(x) for (auto &v: x) cin >> x;
-#define printv(x) for (auto &v: x) cout << x;
+#define readv(x) for (auto &v: x) cin >> v;
+#define printv(x) for (auto &v: x) cout << v << " ";
 
 using ll = long long int;
 using ull = unsigned long long int;
@@ -17,11 +17,11 @@ void solve () {
 }
 
 int main () {
-  cin.tie(0) -> ios_base::sync_with_stdio(0);
+  //cin.tie(0) -> ios_base::sync_with_stdio(0);
 
   int t = 1;
 
-  cin >> t;
+  //cin >> t;
 
   for (int i = 1; i <= t; i++) {
     //cout << "Test #" << i << ":\n";
